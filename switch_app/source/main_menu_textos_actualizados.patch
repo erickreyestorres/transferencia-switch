@@ -1,0 +1,38 @@
+--- main.cpp
++++ main_menu_textos_actualizados.cpp
+@@ -35,21 +35,22 @@
+ constexpr const char* kInboxPath = "sdmc:/switch/transferencia-switch/inbox/";
+ 
+ const char* kMenuItems[] = {
+-    "MTP principal - vistas disponibles",
++    "MTP avanzado - todas las vistas",
+     "Explorar SD - solo lectura",
+-    "Recibir archivos - Inbox seguro",
++    "Recibir archivos - Safe Inbox",
+     "Diagnostico del entorno",
+     "Salir",
+ };
+ 
+-char status_message[256] = "Listo para exponer la SD mediante MTP.";
++char status_message[256] = "Listo para iniciar MTP.";
+ 
+ void draw_menu(int selected) {
+     consoleClear();
+     std::printf("TRANSFERENCIA SWITCH - MTP\n");
+     std::printf("==========================\n\n");
+     std::printf("MTP nativo para Windows, sin programa adicional.\n");
+-    std::printf("La escritura solo se habilita dentro del Inbox seguro.\n\n");
++    std::printf("SD solo lectura y Safe Inbox son las rutas mas seguras.\n");
++    std::printf("El modo avanzado expone vistas sensibles.\n\n");
+     for (size_t index = 0; index < std::size(kMenuItems); ++index) {
+         std::printf("%s %s\n", index == static_cast<size_t>(selected) ? ">" : " ", kMenuItems[index]);
+     }
+@@ -319,7 +320,7 @@
+             std::snprintf(
+                 storage_note,
+                 sizeof(storage_note),
+-                "SD + Inbox + Install SD (NSP/XCI) | USER: %s (0x%08X) | SYSTEM: %s (0x%08X)\nInstalled: %s, apps %u, fail %u (0x%08X) | Album SD: %s (0x%08X) | Album NAND: %s (0x%08X)\nSaves: %u/%u, fail %u, limite %u (0x%08X)",
++                "SD + Inbox + Install SD | USER: %s (0x%08X) | SYSTEM: %s (0x%08X)\nInstalled: %s, apps %u, fail %u (0x%08X) | Album SD: %s (0x%08X) | Album NAND: %s (0x%08X)\nSaves: %u/%u, fail %u, limite %u (0x%08X)",
+                 bis_mounts.userMounted() ? "OK" : "no disponible",
+                 bis_mounts.userResult(),
+                 bis_mounts.systemMounted() ? "OK" : "no disponible",

@@ -1,0 +1,31 @@
+{
+  "project": "Transferencia Switch",
+  "target_path": "switch_app/data/ui/icons/animation_snes/",
+  "animation": {
+    "name": "transfer_active",
+    "sprite_sheet": "transfer_active_sprite_sheet.png",
+    "frame_count": 10,
+    "frame_width": 128,
+    "frame_height": 128,
+    "layout": {
+      "columns": 5,
+      "rows": 2
+    },
+    "frames": [
+      "transfer_active_frame_00.png",
+      "transfer_active_frame_01.png",
+      "transfer_active_frame_02.png",
+      "transfer_active_frame_03.png",
+      "transfer_active_frame_04.png",
+      "transfer_active_frame_05.png",
+      "transfer_active_frame_06.png",
+      "transfer_active_frame_07.png",
+      "transfer_active_frame_08.png",
+      "transfer_active_frame_09.png"
+    ]
+  },
+  "progress_bar": {
+    "svg": "progress_bar_static.svg",
+    "png": "progress_bar_static.png"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "project": "Transferencia Switch",
+  "target_path": "switch_app/data/ui/icons/lote1_snes/",
+  "batch": "lote1_snes",
+  "icons": [
+    {
+      "name": "01_mtp_connect",
+      "label": "Conexión MTP",
+      "primary_color": "#35D7CE",
+      "meaning": "Inicia o representa la conexión MTP entre PC y consola.",
+      "files": {
+        "svg": "01_mtp_connect.svg",
+        "png_32": "01_mtp_connect_32.png",
+        "png_48": "01_mtp_connect_48.png",
+        "png_64": "01_mtp_connect_64.png",
+        "png_128": "01_mtp_connect_128.png",
+        "png_256": "01_mtp_connect_256.png"
+      }
+    },
+    {
+      "name": "02_sd_card_readonly",
+      "label": "SD Card",
+      "primary_color": "#FFD65A",
+      "meaning": "Tarjeta SD en modo solo lectura o acceso protegido.",
+      "files": {
+        "svg": "02_sd_card_readonly.svg",
+        "png_32": "02_sd_card_readonly_32.png",
+        "png_48": "02_sd_card_readonly_48.png",
+        "png_64": "02_sd_card_readonly_64.png",
+        "png_128": "02_sd_card_readonly_128.png",
+        "png_256": "02_sd_card_readonly_256.png"
+      }
+    },
+    {
+      "name": "03_safe_inbox",
+      "label": "Safe Inbox",
+      "primary_color": "#35D7CE",
+      "meaning": "Bandeja segura para recibir archivos de entrada.",
+      "files": {
+        "svg": "03_safe_inbox.svg",
+        "png_32": "03_safe_inbox_32.png",
+        "png_48": "03_safe_inbox_48.png",
+        "png_64": "03_safe_inbox_64.png",
+        "png_128": "03_safe_inbox_128.png",
+        "png_256": "03_safe_inbox_256.png"
+      }
+    },
+    {
+      "name": "04_nand_user",
+      "label": "NAND USER",
+      "primary_color": "#7353B6",
+      "meaning": "Área NAND USER para datos de usuario.",
+      "files": {
+        "svg": "04_nand_user.svg",
+        "png_32": "04_nand_user_32.png",
+        "png_48": "04_nand_user_48.png",
+        "png_64": "04_nand_user_64.png",
+        "png_128": "04_nand_user_128.png",
+        "png_256": "04_nand_user_256.png"
+      }
+    },
+    {
+      "name": "05_nand_system",
+      "label": "NAND SYSTEM",
+      "primary_color": "#FFD65A",
+      "meaning": "Área NAND SYSTEM con señal clara de protección.",
+      "files": {
+        "svg": "05_nand_system.svg",
+        "png_32": "05_nand_system_32.png",
+        "png_48": "05_nand_system_48.png",
+        "png_64": "05_nand_system_64.png",
+        "png_128": "05_nand_system_128.png",
+        "png_256": "05_nand_system_256.png"
+      }
+    },
+    {
+      "name": "06_installed_content",
+      "label": "Contenido instalado",
+      "primary_color": "#D25CD9",
+      "meaning": "Representa el contenido ya instalado o listado.",
+      "files": {
+        "svg": "06_installed_content.svg",
+        "png_32": "06_installed_content_32.png",
+        "png_48": "06_installed_content_48.png",
+        "png_64": "06_installed_content_64.png",
+        "png_128": "06_installed_content_128.png",
+        "png_256": "06_installed_content_256.png"
+      }
+    },
+    {
+      "name": "07_install_sd",
+      "label": "Instalación SD",
+      "primary_color": "#35D7CE",
+      "meaning": "Acción orientada a copiar o instalar en la tarjeta SD.",
+      "files": {
+        "svg": "07_install_sd.svg",
+        "png_32": "07_install_sd_32.png",
+        "png_48": "07_install_sd_48.png",
+        "png_64": "07_install_sd_64.png",
+        "png_128": "07_install_sd_128.png",
+        "png_256": "07_install_sd_256.png"
+      }
+    },
+    {
+      "name": "08_install_nand",
+      "label": "Instalación NAND",
+      "primary_color": "#7353B6",
+      "meaning": "Acción orientada a copiar o instalar en la memoria NAND.",
+      "files": {
+        "svg": "08_install_nand.svg",
+        "png_32": "08_install_nand_32.png",
+        "png_48": "08_install_nand_48.png",
+        "png_64": "08_install_nand_64.png",
+        "png_128": "08_install_nand_128.png",
+        "png_256": "08_install_nand_256.png"
+      }
+    },
+    {
+      "name": "09_save_data",
+      "label": "Saves",
+      "primary_color": "#B8E83F",
+      "meaning": "Partidas guardadas o datos de guardado.",
+      "files": {
+        "svg": "09_save_data.svg",
+        "png_32": "09_save_data_32.png",
+        "png_48": "09_save_data_48.png",
+        "png_64": "09_save_data_64.png",
+        "png_128": "09_save_data_128.png",
+        "png_256": "09_save_data_256.png"
+      }
+    },
+    {
+      "name": "10_album",
+      "label": "Album",
+      "primary_color": "#D25CD9",
+      "meaning": "Álbum de capturas de pantalla y videos.",
+      "files": {
+        "svg": "10_album.svg",
+        "png_32": "10_album_32.png",
+        "png_48": "10_album_48.png",
+        "png_64": "10_album_64.png",
+        "png_128": "10_album_128.png",
+        "png_256": "10_album_256.png"
+      }
+    }
+  ]
+}

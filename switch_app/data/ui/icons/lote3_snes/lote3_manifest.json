@@ -1,0 +1,63 @@
+{
+  "project": "Transferencia Switch",
+  "target_path": "switch_app/data/ui/icons/lote3_snes/",
+  "batch": "lote3_snes",
+  "icons": [
+    {
+      "name": "21_state_transfer_failed",
+      "label": "Transferencia fallida",
+      "primary_color": "#F15A5A",
+      "meaning": "La transferencia terminó con error o verificación incorrecta.",
+      "files": {
+        "svg": "21_state_transfer_failed.svg",
+        "png_32": "21_state_transfer_failed_32.png",
+        "png_48": "21_state_transfer_failed_48.png",
+        "png_64": "21_state_transfer_failed_64.png",
+        "png_128": "21_state_transfer_failed_128.png",
+        "png_256": "21_state_transfer_failed_256.png"
+      }
+    },
+    {
+      "name": "22_state_cancelled",
+      "label": "Cancelada",
+      "primary_color": "#F15A5A",
+      "meaning": "Operación detenida por el usuario o cancelada por seguridad.",
+      "files": {
+        "svg": "22_state_cancelled.svg",
+        "png_32": "22_state_cancelled_32.png",
+        "png_48": "22_state_cancelled_48.png",
+        "png_64": "22_state_cancelled_64.png",
+        "png_128": "22_state_cancelled_128.png",
+        "png_256": "22_state_cancelled_256.png"
+      }
+    },
+    {
+      "name": "23_state_warning",
+      "label": "Advertencia",
+      "primary_color": "#FFD65A",
+      "meaning": "Aviso preventivo: revisar antes de continuar.",
+      "files": {
+        "svg": "23_state_warning.svg",
+        "png_32": "23_state_warning_32.png",
+        "png_48": "23_state_warning_48.png",
+        "png_64": "23_state_warning_64.png",
+        "png_128": "23_state_warning_128.png",
+        "png_256": "23_state_warning_256.png"
+      }
+    },
+    {
+      "name": "24_state_storage_insufficient",
+      "label": "Almacenamiento insuficiente",
+      "primary_color": "#F15A5A",
+      "meaning": "No hay espacio suficiente en el destino seleccionado.",
+      "files": {
+        "svg": "24_state_storage_insufficient.svg",
+        "png_32": "24_state_storage_insufficient_32.png",
+        "png_48": "24_state_storage_insufficient_48.png",
+        "png_64": "24_state_storage_insufficient_64.png",
+        "png_128": "24_state_storage_insufficient_128.png",
+        "png_256": "24_state_storage_insufficient_256.png"
+      }
+    }
+  ]
+}

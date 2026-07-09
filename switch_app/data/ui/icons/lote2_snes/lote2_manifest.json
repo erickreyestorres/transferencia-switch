@@ -1,0 +1,147 @@
+{
+  "project": "Transferencia Switch",
+  "target_path": "switch_app/data/ui/icons/lote2_snes/",
+  "batch": "lote2_snes",
+  "icons": [
+    {
+      "name": "11_physical_cartridge",
+      "label": "Cartucho físico",
+      "primary_color": "#FFD65A",
+      "meaning": "Representa un cartucho físico insertado o detectado, sin marcas.",
+      "files": {
+        "svg": "11_physical_cartridge.svg",
+        "png_32": "11_physical_cartridge_32.png",
+        "png_48": "11_physical_cartridge_48.png",
+        "png_64": "11_physical_cartridge_64.png",
+        "png_128": "11_physical_cartridge_128.png",
+        "png_256": "11_physical_cartridge_256.png"
+      }
+    },
+    {
+      "name": "12_custom_storage",
+      "label": "Storage personalizado",
+      "primary_color": "#B8E83F",
+      "meaning": "Acceso a una ubicación personalizada o carpeta definida por configuración.",
+      "files": {
+        "svg": "12_custom_storage.svg",
+        "png_32": "12_custom_storage_32.png",
+        "png_48": "12_custom_storage_48.png",
+        "png_64": "12_custom_storage_64.png",
+        "png_128": "12_custom_storage_128.png",
+        "png_256": "12_custom_storage_256.png"
+      }
+    },
+    {
+      "name": "13_diagnostics",
+      "label": "Diagnóstico",
+      "primary_color": "#35D7CE",
+      "meaning": "Herramientas de revisión, estado, pruebas y salud del sistema.",
+      "files": {
+        "svg": "13_diagnostics.svg",
+        "png_32": "13_diagnostics_32.png",
+        "png_48": "13_diagnostics_48.png",
+        "png_64": "13_diagnostics_64.png",
+        "png_128": "13_diagnostics_128.png",
+        "png_256": "13_diagnostics_256.png"
+      }
+    },
+    {
+      "name": "14_settings",
+      "label": "Configuración",
+      "primary_color": "#7353B6",
+      "meaning": "Opciones de configuración de la interfaz o del responder.",
+      "files": {
+        "svg": "14_settings.svg",
+        "png_32": "14_settings_32.png",
+        "png_48": "14_settings_48.png",
+        "png_64": "14_settings_64.png",
+        "png_128": "14_settings_128.png",
+        "png_256": "14_settings_256.png"
+      }
+    },
+    {
+      "name": "15_exit",
+      "label": "Salir",
+      "primary_color": "#35D7CE",
+      "meaning": "Salir de la pantalla actual, cerrar la interfaz o volver atrás.",
+      "files": {
+        "svg": "15_exit.svg",
+        "png_32": "15_exit_32.png",
+        "png_48": "15_exit_48.png",
+        "png_64": "15_exit_64.png",
+        "png_128": "15_exit_128.png",
+        "png_256": "15_exit_256.png"
+      }
+    },
+    {
+      "name": "16_state_waiting_connection",
+      "label": "Esperando conexión",
+      "primary_color": "#CFCFD7",
+      "meaning": "Estado en espera: el responder está activo y aguarda conexión del PC.",
+      "files": {
+        "svg": "16_state_waiting_connection.svg",
+        "png_32": "16_state_waiting_connection_32.png",
+        "png_48": "16_state_waiting_connection_48.png",
+        "png_64": "16_state_waiting_connection_64.png",
+        "png_128": "16_state_waiting_connection_128.png",
+        "png_256": "16_state_waiting_connection_256.png"
+      }
+    },
+    {
+      "name": "17_state_connected",
+      "label": "Conectado",
+      "primary_color": "#B8E83F",
+      "meaning": "Estado conectado: el PC y la consola ya establecieron comunicación.",
+      "files": {
+        "svg": "17_state_connected.svg",
+        "png_32": "17_state_connected_32.png",
+        "png_48": "17_state_connected_48.png",
+        "png_64": "17_state_connected_64.png",
+        "png_128": "17_state_connected_128.png",
+        "png_256": "17_state_connected_256.png"
+      }
+    },
+    {
+      "name": "18_state_receiving",
+      "label": "Recibiendo",
+      "primary_color": "#35D7CE",
+      "meaning": "Estado de recepción: la consola está recibiendo archivos o datos.",
+      "files": {
+        "svg": "18_state_receiving.svg",
+        "png_32": "18_state_receiving_32.png",
+        "png_48": "18_state_receiving_48.png",
+        "png_64": "18_state_receiving_64.png",
+        "png_128": "18_state_receiving_128.png",
+        "png_256": "18_state_receiving_256.png"
+      }
+    },
+    {
+      "name": "19_state_sending",
+      "label": "Enviando",
+      "primary_color": "#D25CD9",
+      "meaning": "Estado de envío: la consola está enviando archivos o datos al PC.",
+      "files": {
+        "svg": "19_state_sending.svg",
+        "png_32": "19_state_sending_32.png",
+        "png_48": "19_state_sending_48.png",
+        "png_64": "19_state_sending_64.png",
+        "png_128": "19_state_sending_128.png",
+        "png_256": "19_state_sending_256.png"
+      }
+    },
+    {
+      "name": "20_state_transfer_success",
+      "label": "Transferencia correcta",
+      "primary_color": "#B8E83F",
+      "meaning": "Transferencia finalizada correctamente y verificada sin errores.",
+      "files": {
+        "svg": "20_state_transfer_success.svg",
+        "png_32": "20_state_transfer_success_32.png",
+        "png_48": "20_state_transfer_success_48.png",
+        "png_64": "20_state_transfer_success_64.png",
+        "png_128": "20_state_transfer_success_128.png",
+        "png_256": "20_state_transfer_success_256.png"
+      }
+    }
+  ]
+}

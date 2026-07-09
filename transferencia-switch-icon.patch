@@ -1,0 +1,11 @@
+diff --git a/switch_app/Makefile b/switch_app/Makefile
+--- a/switch_app/Makefile
++++ b/switch_app/Makefile
+@@ -47,7 +47,7 @@ export OFILES_BIN := $(addsuffix .o,$(BINFILES))
+ export INCLUDE := $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
+                   $(foreach dir,$(LIBDIRS),-I$(PORTLIBS)/include -I$(DEVKITPRO)/$(dir)/include)
+ export LIBPATHS := $(foreach dir,$(LIBDIRS),-L$(PORTLIBS)/lib -L$(DEVKITPRO)/$(dir)/lib)
+-export NROFLAGS += --nacp=$(CURDIR)/$(TARGET).nacp --romfsdir=$(CURDIR)/$(ROMFS)
++export NROFLAGS += --nacp=$(CURDIR)/$(TARGET).nacp --icon=$(CURDIR)/icon.jpg --romfsdir=$(CURDIR)/$(ROMFS)
+ 
+ .PHONY: all clean
