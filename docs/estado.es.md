@@ -35,6 +35,8 @@
 - Herramienta de fixtures sintéticos: `tools/package_fixtures.py` genera NSP/XCI
   sparse de distintos tamaños y simula recepción por chunks para detectar riesgos
   antes de probar en consola.
+- Documento de inspiración funcional DBI: `docs/dbi-inspiracion.es.md` compara
+  módulos públicos de DBI con nuestro estado y posibles plus propios.
 - Rollback de metadatos y contenidos nuevos ante error o cancelación.
 - Primera instalación NSP confirmada en hardware; Windows perdió la confirmación final.
 - La respuesta MTP final ahora se envía antes de cerrar los servicios NCM/NS/ES.

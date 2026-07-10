@@ -70,6 +70,9 @@ Para una explicación carpeta por carpeta, revisa
 Para retomar el desarrollo desde el último punto conocido, revisa
 [`docs/estado.es.md`](docs/estado.es.md).
 
+Para ver la comparación funcional con DBI como inspiración de producto, revisa
+[`docs/dbi-inspiracion.es.md`](docs/dbi-inspiracion.es.md).
+
 ## Compilación
 
 Requiere Docker Desktop y la imagen `devkitpro/devkita64`:
