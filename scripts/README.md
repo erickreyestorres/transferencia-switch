@@ -40,3 +40,16 @@ powershell -ExecutionPolicy Bypass -File .\scripts\functional_smoke.ps1 -SkipBui
 
 Esta prueba no reemplaza la validación en hardware; sirve para detectar errores
 antes de copiar el NRO a la SD.
+
+## Fixtures de paquetes sintéticos
+
+Para simular NSP/XCI sin usar archivos reales:
+
+```powershell
+python .\tools\package_fixtures.py make-nsp .\_local\fixtures\demo.nsp --payload-size 2097152
+python .\tools\package_fixtures.py make-xci .\_local\fixtures\large.xci --secure-payload-size 5368709120
+python .\tools\package_fixtures.py inspect .\_local\fixtures\large.xci
+```
+
+Los XCI grandes se crean como archivos sparse cuando Windows/NTFS lo permite, por lo
+que pueden simular varios GiB sin ocuparlos físicamente en disco.
