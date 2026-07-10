@@ -22,5 +22,7 @@ docker run --rm -v "${PWD}:/work" -w /work/switch_app `
 
 Resultado:
 
-`switch_app/transferencia_switch.nro`
+`dist/transferencia_switch.nro`
 
+`switch_app/transferencia_switch.nro` también puede existir como salida intermedia
+del Makefile, pero el archivo cómodo para copiar a la consola es el de `dist/`.

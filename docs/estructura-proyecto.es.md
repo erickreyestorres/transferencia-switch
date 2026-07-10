@@ -13,6 +13,7 @@ transferencia-switch/
 ├─ docs/            Documentación técnica y de producto.
 ├─ scripts/         Scripts para compilar, probar o ejecutar prototipos.
 ├─ tools/           Herramientas auxiliares para mantener assets.
+├─ dist/            Salida generada: NRO listo para copiar a la consola.
 ├─ README*.md       Documentación principal en español e inglés.
 └─ .gitignore       Reglas para no subir binarios ni archivos temporales.
 ```
@@ -127,6 +128,10 @@ Estos archivos se generan al compilar y están ignorados por Git:
 - `switch_app/*.map`
 - carpetas `build/`
 - ZIPs temporales
+
+El script `scripts/build_switch.ps1` copia automáticamente el NRO final a:
+
+`dist/transferencia_switch.nro`
 
 ## Regla de trabajo recomendada
 

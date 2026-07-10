@@ -77,7 +77,9 @@ docker run --rm -v "${PWD}:/work" -w /work/switch_app `
 
 El resultado se genera en:
 
-`switch_app/transferencia_switch.nro`
+`dist/transferencia_switch.nro`
+
+Ese es el archivo que debes copiar a la SD de la consola.
 
 ## Pruebas
 
