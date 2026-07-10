@@ -11,9 +11,10 @@ transferencia-switch/
 ├─ pc_backend/      Backend USB antiguo/prototipo, conservado para pruebas.
 ├─ tests/           Pruebas automáticas Python.
 ├─ docs/            Documentación técnica y de producto.
-├─ tools/           Herramientas auxiliares para mantener assets o scripts.
+├─ scripts/         Scripts para compilar, probar o ejecutar prototipos.
+├─ tools/           Herramientas auxiliares para mantener assets.
 ├─ README*.md       Documentación principal en español e inglés.
-└─ build_*.ps1/cmd  Scripts cómodos para compilar.
+└─ .gitignore       Reglas para no subir binarios ni archivos temporales.
 ```
 
 ## `switch_app/`
@@ -134,9 +135,8 @@ Cada mejora debería ir en su propia rama:
 ```powershell
 git checkout -b feature/nombre-corto
 python -m unittest discover -s tests -q
-powershell -ExecutionPolicy Bypass -File .\test_switch_core.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\test_switch_core.ps1
 git add .
 git commit -m "Mensaje claro"
 git push -u origin feature/nombre-corto
 ```
-

@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$root = (Resolve-Path $PSScriptRoot).Path
+$root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 docker version | Out-Null
 if ($LASTEXITCODE -ne 0) {
     throw "Docker Desktop no está disponible"

@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$root = (Resolve-Path $PSScriptRoot).Path
+$root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $python = Join-Path $root ".venv\Scripts\python.exe"
 $requirements = Join-Path $root "pc_backend\requirements.txt"
 
@@ -14,4 +14,3 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 & $python (Join-Path $root "pc_backend\main.py")
-
