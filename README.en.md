@@ -77,7 +77,9 @@ docker run --rm -v "${PWD}:/work" -w /work/switch_app `
 
 The output is generated at:
 
-`switch_app/transferencia_switch.nro`
+`dist/transferencia_switch.nro`
+
+That is the file intended to be copied to the console SD card.
 
 ## Tests
 

@@ -16,4 +16,15 @@ if ($LASTEXITCODE -ne 0) {
     throw "Falló la compilación de la aplicación Switch"
 }
 
-Write-Host "Generado: $root\switch_app\transferencia_switch.nro"
+$sourceNro = Join-Path $root "switch_app\transferencia_switch.nro"
+$dist = Join-Path $root "dist"
+$distNro = Join-Path $dist "transferencia_switch.nro"
+
+if (-not (Test-Path -LiteralPath $sourceNro)) {
+    throw "No se encontro el NRO generado en $sourceNro"
+}
+
+New-Item -ItemType Directory -Force -Path $dist | Out-Null
+Copy-Item -LiteralPath $sourceNro -Destination $distNro -Force
+
+Write-Host "Generado para instalar/copiar: $distNro"

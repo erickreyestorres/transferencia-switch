@@ -10,6 +10,7 @@ transferencia-switch/
 ├─ docs/            Technical and product documentation.
 ├─ scripts/         Convenience scripts for build, tests, and legacy tools.
 ├─ tools/           Maintenance helper assets.
+├─ dist/            Generated output: NRO ready to copy to the console.
 ├─ README*.md       Main documentation in Spanish and English.
 └─ .gitignore       Rules to avoid committing binaries and temporary files.
 ```
@@ -26,6 +27,10 @@ The actual Switch application. This is what builds the `.nro`.
 - `tests/`: native C tests.
 - `Makefile`: devkitPro build recipe.
 - `icon.jpg`: Homebrew Menu icon.
+
+The build script copies the final NRO to:
+
+`dist/transferencia_switch.nro`
 
 ## Hexagonal layout
 
