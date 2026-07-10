@@ -66,6 +66,9 @@ documentada, no una copia de código privado.
 Para una explicación carpeta por carpeta, revisa
 [`docs/estructura-proyecto.es.md`](docs/estructura-proyecto.es.md).
 
+Para retomar el desarrollo desde el último punto conocido, revisa
+[`docs/estado.es.md`](docs/estado.es.md).
+
 ## Compilación
 
 Requiere Docker Desktop y la imagen `devkitpro/devkita64`:
