@@ -16,6 +16,8 @@ la consola.
 - `test_menu_input.py`: navegación del menú.
 - `test_package_fixtures.py`: genera NSP/XCI sintéticos para probar tamaños normales,
   mayores de 4 GiB y XCI con padding sin depender de archivos reales.
+- `test_mtp_stream_simulator.py`: simula transferencias MTP por chunks, tamaño
+  desconocido, padding, cancelación y errores de tamaño anunciado.
 
 Comando:
 

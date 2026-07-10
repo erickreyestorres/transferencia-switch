@@ -58,3 +58,17 @@ que pueden simular varios GiB sin ocuparlos físicamente en disco.
 `simulate-stream` ayuda a detectar si el tamaño inferido por PFS0/HFS0 coincide con el
 tamaño del archivo del host o si quedan bytes extra al final que requieren validación
 en hardware.
+
+## Simulador MTP local
+
+Para simular el envío MTP por chunks con tamaño conocido o desconocido:
+
+```powershell
+python .\tools\mtp_stream_simulator.py .\_local\fixtures\large.xci --unknown-size --chunk-size 524288
+```
+
+También permite simular cancelaciones:
+
+```powershell
+python .\tools\mtp_stream_simulator.py .\_local\fixtures\demo.nsp --cancel-after 65536
+```
