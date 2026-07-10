@@ -70,6 +70,9 @@ Para una explicación carpeta por carpeta, revisa
 Para retomar el desarrollo desde el último punto conocido, revisa
 [`docs/estado.es.md`](docs/estado.es.md).
 
+Para ver la comparación funcional con DBI como inspiración de producto, revisa
+[`docs/dbi-inspiracion.es.md`](docs/dbi-inspiracion.es.md).
+
 ## Compilación
 
 Requiere Docker Desktop y la imagen `devkitpro/devkita64`:
@@ -108,6 +111,7 @@ usar archivos reales:
 ```powershell
 python .\tools\package_fixtures.py make-xci .\_local\fixtures\large.xci --secure-payload-size 5368709120
 python .\tools\package_fixtures.py simulate-stream .\_local\fixtures\large.xci --chunk-size 262144
+python .\tools\mtp_stream_simulator.py .\_local\fixtures\large.xci --unknown-size --report
 ```
 
 Esto permite probar casos grandes, tamaño MTP desconocido y padding final antes de

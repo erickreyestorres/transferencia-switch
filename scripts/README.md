@@ -66,6 +66,7 @@ Para simular el envío MTP por chunks con tamaño conocido o desconocido:
 
 ```powershell
 python .\tools\mtp_stream_simulator.py .\_local\fixtures\large.xci --unknown-size --chunk-size 524288
+python .\tools\mtp_stream_simulator.py .\_local\fixtures\large.xci --unknown-size --chunk-size 524288 --report
 ```
 
 También permite simular cancelaciones:
