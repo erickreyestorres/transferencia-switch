@@ -6,6 +6,7 @@ SOURCES := \
 	../source/domain/safe_path.c \
 	../source/domain/save_backup_plan.c \
 	../source/domain/catalog.c \
+	../source/application/plan_save_backups.c \
 	../source/application/list_remote_files.c \
 	../source/application/probe_remote_file.c \
 	../source/adapters/dbi_catalog.c \

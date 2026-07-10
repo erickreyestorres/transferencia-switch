@@ -39,6 +39,8 @@
   módulos públicos de DBI con nuestro estado y posibles plus propios.
 - Base segura para futuro backup de saves: `save_backup_plan` genera rutas y
   manifest v1 sin depender de libnx ni modificar saves.
+- Caso de uso portable `plan_save_backups`: prepara múltiples planes y resumen de
+  fallos/capacidad antes de copiar archivos reales.
 - Rollback de metadatos y contenidos nuevos ante error o cancelación.
 - Primera instalación NSP confirmada en hardware; Windows perdió la confirmación final.
 - La respuesta MTP final ahora se envía antes de cerrar los servicios NCM/NS/ES.
