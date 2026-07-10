@@ -98,9 +98,9 @@ Para una prueba funcional rápida de PC antes de copiar un nuevo NRO a la consol
 powershell -ExecutionPolicy Bypass -File .\scripts\functional_smoke.ps1
 ```
 
-Esto ejecuta pruebas Python, pruebas C, compila con Docker y verifica que exista
-`dist/transferencia_switch.nro` con hash SHA256. No reemplaza la prueba real en
-hardware, pero evita instalar builds rotos.
+Esto ejecuta pruebas Python, pruebas C, simulaciones MTP con XCI sintéticos, compila
+con Docker y verifica que exista `dist/transferencia_switch.nro` con hash SHA256. No
+reemplaza la prueba real en hardware, pero evita instalar builds rotos.
 
 También existen fixtures sintéticos para simular NSP/XCI de distintos tamaños sin
 usar archivos reales:

@@ -23,8 +23,9 @@ Prueba funcional rápida antes de pasar el NRO a la consola:
 1. ejecuta todas las pruebas Python;
 2. ejecuta las pruebas C;
 3. compila el NRO con Docker;
-4. verifica que exista `dist/transferencia_switch.nro`;
-5. imprime tamaño y SHA256 del NRO.
+4. genera fixtures XCI sintéticos y simula transferencias MTP grandes/padding;
+5. verifica que exista `dist/transferencia_switch.nro`;
+6. imprime tamaño y SHA256 del NRO.
 
 Uso recomendado:
 
