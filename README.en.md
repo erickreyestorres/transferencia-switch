@@ -27,6 +27,23 @@ required.
 
   `install.log` → `install.previous.log`
 
+## Collaboration
+
+The project is open to technical collaboration and review. We are especially
+interested in contributions around:
+
+- stable MTP transfers for large files;
+- robust support for XCI files above 4 GB;
+- XCI/CXCI/trimmed parsing;
+- NSZ/XCZ;
+- preventing sleep during long transfers;
+- console UI and touch usability improvements.
+
+If the DBI team or other homebrew developers find any of these ideas useful for
+existing projects, we are open to coordinating, learning, or adapting the approach.
+This repository aims to be an independent and documented implementation, not a
+copy of private code.
+
 ## Known limitations
 
 - Large XCI files, especially above 4 GB, still require a full review of the

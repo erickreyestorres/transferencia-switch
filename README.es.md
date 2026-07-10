@@ -28,6 +28,23 @@ privado ni se depende de su fuente.
 
   `install.log` → `install.previous.log`
 
+## Colaboración
+
+El proyecto está abierto a colaboración técnica y revisión. En particular, nos
+interesan aportes sobre:
+
+- transferencias MTP estables con archivos grandes;
+- soporte robusto para XCI mayores de 4 GB;
+- parsing de XCI/CXCI/trimmed;
+- NSZ/XCZ;
+- prevención de suspensión durante transferencias largas;
+- mejoras de interfaz para pantalla de consola y uso táctil.
+
+Si el equipo de DBI u otros desarrolladores homebrew consideran que alguna idea
+puede ser útil para proyectos existentes, estamos abiertos a coordinar, aprender o
+adaptar el enfoque. Este repositorio busca ser una implementación independiente y
+documentada, no una copia de código privado.
+
 ## Limitaciones conocidas
 
 - Los XCI grandes, especialmente sobre 4 GB, requieren una revisión completa de la
@@ -78,4 +95,3 @@ Este proyecto prioriza rutas seguras:
 El proyecto está pensado para desarrollo, investigación y uso con contenido propio
 o respaldos legítimos. Cada usuario es responsable de cumplir las leyes y términos
 aplicables en su país.
-
