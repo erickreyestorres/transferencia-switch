@@ -63,6 +63,12 @@ documentada, no una copia de código privado.
 - `tests/`: pruebas Python de arquitectura, MTP y reglas de seguridad.
 - `docs/`: documentación técnica y de producto.
 
+Para una explicación carpeta por carpeta, revisa
+[`docs/estructura-proyecto.es.md`](docs/estructura-proyecto.es.md).
+
+Para retomar el desarrollo desde el último punto conocido, revisa
+[`docs/estado.es.md`](docs/estado.es.md).
+
 ## Compilación
 
 Requiere Docker Desktop y la imagen `devkitpro/devkita64`:
@@ -74,13 +80,15 @@ docker run --rm -v "${PWD}:/work" -w /work/switch_app `
 
 El resultado se genera en:
 
-`switch_app/transferencia_switch.nro`
+`dist/transferencia_switch.nro`
+
+Ese es el archivo que debes copiar a la SD de la consola.
 
 ## Pruebas
 
 ```powershell
 python -m unittest discover -s tests -q
-powershell -ExecutionPolicy Bypass -File .\test_switch_core.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\test_switch_core.ps1
 ```
 
 ## Seguridad del proyecto

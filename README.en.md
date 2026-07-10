@@ -63,6 +63,9 @@ copy of private code.
 - `tests/`: Python tests for architecture, MTP behavior, and safety rules.
 - `docs/`: technical and product documentation.
 
+For a folder-by-folder explanation, see
+[`docs/project-structure.en.md`](docs/project-structure.en.md).
+
 ## Build
 
 Requires Docker Desktop and the `devkitpro/devkita64` image:
@@ -74,13 +77,15 @@ docker run --rm -v "${PWD}:/work" -w /work/switch_app `
 
 The output is generated at:
 
-`switch_app/transferencia_switch.nro`
+`dist/transferencia_switch.nro`
+
+That is the file intended to be copied to the console SD card.
 
 ## Tests
 
 ```powershell
 python -m unittest discover -s tests -q
-powershell -ExecutionPolicy Bypass -File .\test_switch_core.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\test_switch_core.ps1
 ```
 
 ## Safety stance
