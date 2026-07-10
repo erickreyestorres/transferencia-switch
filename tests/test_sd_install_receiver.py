@@ -108,6 +108,13 @@ class SdInstallReceiverTests(unittest.TestCase):
         self.assertIn("ncmContentMetaDatabaseRemove", self.receiver)
         self.assertIn("ncmContentStorageDelete", self.receiver)
 
+    def test_existing_content_is_reported_as_already_installed(self) -> None:
+        self.assertIn("existing_nca_count_", self.receiver)
+        self.assertIn("ENTRY existing", self.receiver)
+        self.assertIn("contenido ya instalado", self.receiver)
+        self.assertIn("ya instalado; contenido existente reutilizado", self.receiver)
+        self.assertIn("existing_nca=%u", self.receiver)
+
 
 if __name__ == "__main__":
     unittest.main()
