@@ -21,3 +21,9 @@ Comando:
 python -m unittest discover -s tests -q
 ```
 
+Para una comprobación funcional completa de PC antes de probar en hardware:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\functional_smoke.ps1
+```
+
