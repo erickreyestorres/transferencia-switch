@@ -20,6 +20,8 @@ class SdInstallReceiverTests(unittest.TestCase):
         self.assertIn('"5: SD Card install"', self.main)
         self.assertIn("addActionStorage(kSdInstallStorageId", self.main)
         self.assertIn("SdInstallReceiverFactory", self.main)
+        self.assertIn("android::MtpStorage sd_install_storage", self.main)
+        self.assertIn('"5: SD Card install",\n        kInboxReserveBytes,\n        true,\n        0,', self.main)
 
     def test_mtp_streams_to_an_injected_sink(self) -> None:
         self.assertIn("IncomingObjectSinkFactory", self.server)
@@ -72,6 +74,11 @@ class SdInstallReceiverTests(unittest.TestCase):
         self.assertIn('".xci"', self.receiver)
         self.assertIn("solo NSP o XCI sin compresion", self.receiver)
         self.assertIn("for (const NcmContentId& cnmt_id : cnmt_ids_)", self.receiver)
+
+    def test_large_unknown_mtp_size_is_reported_explicitly(self) -> None:
+        self.assertIn("expected_size_ == 0xFFFFFFFFull", self.receiver)
+        self.assertIn("tamano MTP desconocido aun no soportado", self.receiver)
+        self.assertNotIn("expected_size_ < kMinPackageSize || expected_size_ >=", self.receiver)
 
     def test_collections_support_multiple_cnmt_records(self) -> None:
         self.assertIn("cnmt_ids_.empty() || cnmt_ids_.size() > 32", self.receiver)
