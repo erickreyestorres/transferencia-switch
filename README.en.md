@@ -46,10 +46,10 @@ copy of private code.
 
 ## Known limitations
 
-- Large XCI files above 4 GB still require MTP reception with unknown size
-  (`0xFFFFFFFF`). The app now prepares the install storage so Windows can start
-  those transfers, but it still rejects them with an explicit error until safe
-  streaming reception is implemented.
+- Large XCI/NSP packages reported by Windows with unknown MTP size (`0xFFFFFFFF`)
+  now use an experimental streaming path: the app tries to infer the real package
+  length from PFS0/HFS0 and stop once the package is complete. This still needs
+  validation with real large XCI files before treating it as stable.
 - NSZ/XCZ are not supported yet.
 - NAND installation is intentionally disabled for safety.
 - Console auto-sleep can interrupt long transfers.

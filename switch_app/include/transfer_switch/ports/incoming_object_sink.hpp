@@ -12,6 +12,15 @@ public:
     virtual ~IncomingObjectSink() = default;
 
     virtual bool write(const void* data, size_t size) = 0;
+    virtual bool hasKnownFinalSize() const {
+        return false;
+    }
+    virtual uint64_t finalSize() const {
+        return 0;
+    }
+    virtual bool isComplete() const {
+        return false;
+    }
     virtual bool finish() = 0;
     virtual void abort() = 0;
     virtual const char* detail() const = 0;

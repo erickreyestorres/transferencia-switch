@@ -27,7 +27,8 @@
 - Espera USB cancelable aun cuando el host no esté conectado.
 - Navegación del menú mediante cruceta y palancas de ambos Joy-Con.
 - Puerto hexagonal `IncomingObjectSink` para receptores MTP de acción.
-- `5: SD Card install` agregado para NSP/XCI sin compresión, un CNMT y menos de 4 GiB.
+- `5: SD Card install` agregado para NSP/XCI sin compresión, con soporte experimental
+  para streams MTP de tamaño desconocido (`0xFFFFFFFF`) en archivos grandes.
 - XCI valida HFS0 raíz/secure y convierte cabeceras NCA de Gamecard antes del registro.
 - Escritura secuencial directa a placeholders NCM, sin duplicar el paquete en FAT32.
 - Validación PFS0/CNMT, registro de metadatos y ApplicationRecord.

@@ -47,9 +47,10 @@ documentada, no una copia de código privado.
 
 ## Limitaciones conocidas
 
-- Los XCI grandes sobre 4 GB todavía requieren recepción MTP con tamaño desconocido
-  (`0xFFFFFFFF`). La app ya prepara el storage para aceptarlos desde Windows, pero
-  aún los rechaza con un error explícito hasta implementar recepción streaming segura.
+- Los XCI/NSP grandes que Windows informa con tamaño MTP desconocido (`0xFFFFFFFF`)
+  ahora usan una ruta streaming experimental: la app intenta inferir el tamaño real
+  desde PFS0/HFS0 y detenerse al completar el paquete. Debe validarse con XCI grandes
+  reales antes de considerarlo estable.
 - NSZ/XCZ todavía no están soportados.
 - La instalación hacia NAND no está habilitada por seguridad.
 - La suspensión automática de la consola puede cortar transferencias largas.
