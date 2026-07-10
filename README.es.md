@@ -73,6 +73,9 @@ Para retomar el desarrollo desde el último punto conocido, revisa
 Para ver la comparación funcional con DBI como inspiración de producto, revisa
 [`docs/dbi-inspiracion.es.md`](docs/dbi-inspiracion.es.md).
 
+Para el diseño del futuro backup de partidas, revisa
+[`docs/saves-backup.es.md`](docs/saves-backup.es.md).
+
 ## Compilación
 
 Requiere Docker Desktop y la imagen `devkitpro/devkita64`:
