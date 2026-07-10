@@ -108,6 +108,7 @@ Documentación técnica y de producto. Aquí se guarda el “por qué” de las 
 - `instalacion-mtp.md`: diseño de instalación por MTP.
 - `hardware-test.md`: pruebas en consola real.
 - `mtp-roadmap.md`: próximos pasos MTP.
+- `estado.es.md`: resumen práctico para retomar el proyecto.
 
 ## `tools/`
 
