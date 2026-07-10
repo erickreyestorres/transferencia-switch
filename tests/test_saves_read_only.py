@@ -55,6 +55,22 @@ class SavesReadOnlyArchitectureTests(unittest.TestCase):
         self.assertIn("database.addVirtualStorage(kSavesStorageId)", main)
         self.assertIn("server.addStorage(&saves_storage)", main)
 
+    def test_save_backup_plan_is_portable_domain(self) -> None:
+        header = (
+            SWITCH_APP / "include" / "transfer_switch" / "domain"
+            / "save_backup_plan.h"
+        ).read_text(encoding="utf-8")
+        source = (
+            SWITCH_APP / "source" / "domain" / "save_backup_plan.c"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("TS_SAVE_BACKUP_ROOT", header)
+        self.assertIn("ts_save_backup_plan_create", header)
+        self.assertIn("transferencia-switch.save-backup.v1", source)
+        self.assertNotIn("<switch.h>", source)
+        self.assertNotIn("fsdevMountSaveData", source)
+        self.assertNotIn("fsFileWrite", source)
+
 
 if __name__ == "__main__":
     unittest.main()

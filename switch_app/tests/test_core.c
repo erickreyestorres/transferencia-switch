@@ -5,6 +5,7 @@
 #include "transfer_switch/adapters/dbi_catalog.h"
 #include "transfer_switch/application/list_remote_files.h"
 #include "transfer_switch/application/probe_remote_file.h"
+#include "transfer_switch/domain/save_backup_plan.h"
 #include "transfer_switch/domain/safe_path.h"
 
 static int tests_run = 0;
@@ -214,12 +215,49 @@ static void test_safe_destination_paths(void) {
     CHECK(!ts_is_safe_direct_child(root, root, "sdmc:/switch/transferencia-switch/inbox/C:archivo"));
 }
 
+static void test_save_backup_plan(void) {
+    TsSaveBackupPlan plan;
+    char manifest[TS_SAVE_BACKUP_MANIFEST_MAX];
+
+    CHECK(ts_save_backup_plan_create(
+        &plan,
+        0x0100ABCDEF123456ull,
+        0x1122334455667788ull,
+        0x99AABBCCDDEEFF00ull,
+        "2026-07-10"
+    ) == TS_OK);
+    CHECK(strcmp(plan.date, "2026-07-10") == 0);
+    CHECK(strcmp(plan.folder_name, "0100ABCDEF123456_user_55667788") == 0);
+    CHECK(strcmp(
+        plan.backup_path,
+        "sdmc:/switch/transferencia-switch/backups/saves/2026-07-10/0100ABCDEF123456_user_55667788"
+    ) == 0);
+    CHECK(strcmp(
+        plan.files_path,
+        "sdmc:/switch/transferencia-switch/backups/saves/2026-07-10/0100ABCDEF123456_user_55667788/files"
+    ) == 0);
+    CHECK(strcmp(
+        plan.manifest_path,
+        "sdmc:/switch/transferencia-switch/backups/saves/2026-07-10/0100ABCDEF123456_user_55667788/manifest.json"
+    ) == 0);
+
+    CHECK(ts_save_backup_manifest_json(&plan, manifest, sizeof(manifest)) == TS_OK);
+    CHECK(strstr(manifest, "\"schema\": \"transferencia-switch.save-backup.v1\"") != NULL);
+    CHECK(strstr(manifest, "\"application_id\": \"0100ABCDEF123456\"") != NULL);
+    CHECK(strstr(manifest, "\"files_dir\": \"files\"") != NULL);
+
+    CHECK(ts_save_backup_plan_create(&plan, 0, 1, 2, "2026-07-10") == TS_INVALID_ARGUMENT);
+    CHECK(ts_save_backup_plan_create(&plan, 1, 1, 2, "20260710") == TS_INVALID_ARGUMENT);
+    CHECK(ts_save_backup_manifest_json(&plan, manifest, 16) == TS_BUFFER_TOO_SMALL);
+}
+
 int main(void) {
     test_catalog_domain();
     test_list_use_case();
     test_dbi_adapter();
     test_dbi_adapter_rejects_bad_magic();
     test_safe_destination_paths();
+    test_save_backup_plan();
 
     if (tests_failed != 0) {
         fprintf(stderr, "%d de %d comprobaciones fallaron.\n", tests_failed, tests_run);
