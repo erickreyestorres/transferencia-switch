@@ -49,7 +49,12 @@ Para simular NSP/XCI sin usar archivos reales:
 python .\tools\package_fixtures.py make-nsp .\_local\fixtures\demo.nsp --payload-size 2097152
 python .\tools\package_fixtures.py make-xci .\_local\fixtures\large.xci --secure-payload-size 5368709120
 python .\tools\package_fixtures.py inspect .\_local\fixtures\large.xci
+python .\tools\package_fixtures.py simulate-stream .\_local\fixtures\large.xci --chunk-size 262144
 ```
 
 Los XCI grandes se crean como archivos sparse cuando Windows/NTFS lo permite, por lo
 que pueden simular varios GiB sin ocuparlos físicamente en disco.
+
+`simulate-stream` ayuda a detectar si el tamaño inferido por PFS0/HFS0 coincide con el
+tamaño del archivo del host o si quedan bytes extra al final que requieren validación
+en hardware.

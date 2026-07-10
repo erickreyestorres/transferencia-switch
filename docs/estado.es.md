@@ -32,6 +32,9 @@
 - XCI valida HFS0 raíz/secure y convierte cabeceras NCA de Gamecard antes del registro.
 - Escritura secuencial directa a placeholders NCM, sin duplicar el paquete en FAT32.
 - Validación PFS0/CNMT, registro de metadatos y ApplicationRecord.
+- Herramienta de fixtures sintéticos: `tools/package_fixtures.py` genera NSP/XCI
+  sparse de distintos tamaños y simula recepción por chunks para detectar riesgos
+  antes de probar en consola.
 - Rollback de metadatos y contenidos nuevos ante error o cancelación.
 - Primera instalación NSP confirmada en hardware; Windows perdió la confirmación final.
 - La respuesta MTP final ahora se envía antes de cerrar los servicios NCM/NS/ES.

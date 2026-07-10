@@ -142,6 +142,32 @@ def inspect_package(path: Path) -> PackageInfo:
     return PackageInfo("XCI", inferred, tuple(name for name, _, _ in secure_entries))
 
 
+def simulate_stream(path: Path, chunk_size: int = 16 * 1024) -> dict[str, int | str | bool]:
+    """Simula una recepción por chunks y detecta cuándo el parser sabría detenerse.
+
+    Esta función no interpreta NCAs ni llama servicios de Switch. Su objetivo es probar
+    la parte mecánica que más nos interesa para MTP grande: cuánto se debe leer hasta
+    conocer el tamaño real del paquete y si el archivo del host trae bytes extra.
+    """
+    if chunk_size <= 0:
+        raise ValueError("chunk_size debe ser positivo")
+
+    host_size = path.stat().st_size
+    inspected = inspect_package(path)
+    transferred = 0
+    while transferred < host_size and transferred < inspected.inferred_size:
+        transferred += min(chunk_size, inspected.inferred_size - transferred)
+
+    return {
+        "kind": inspected.kind,
+        "host_size": host_size,
+        "inferred_size": inspected.inferred_size,
+        "transferred_until_complete": transferred,
+        "complete": transferred == inspected.inferred_size,
+        "trailing_bytes": max(0, host_size - inspected.inferred_size),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -158,13 +184,22 @@ def main() -> int:
     inspect = sub.add_parser("inspect")
     inspect.add_argument("path", type=Path)
 
+    simulate = sub.add_parser("simulate-stream")
+    simulate.add_argument("path", type=Path)
+    simulate.add_argument("--chunk-size", type=int, default=16 * 1024)
+
     args = parser.parse_args()
     if args.command == "make-nsp":
         info = create_nsp(args.path, args.payload_size)
     elif args.command == "make-xci":
         info = create_xci(args.path, args.secure_payload_size, args.trailing_padding)
-    else:
+    elif args.command == "inspect":
         info = inspect_package(args.path)
+    else:
+        result = simulate_stream(args.path, args.chunk_size)
+        for key, value in result.items():
+            print(f"{key}={value}")
+        return 0
 
     disk_size = os.path.getsize(args.path)
     print(f"kind={info.kind}")

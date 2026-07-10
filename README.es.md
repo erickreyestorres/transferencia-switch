@@ -102,6 +102,17 @@ Esto ejecuta pruebas Python, pruebas C, compila con Docker y verifica que exista
 `dist/transferencia_switch.nro` con hash SHA256. No reemplaza la prueba real en
 hardware, pero evita instalar builds rotos.
 
+También existen fixtures sintéticos para simular NSP/XCI de distintos tamaños sin
+usar archivos reales:
+
+```powershell
+python .\tools\package_fixtures.py make-xci .\_local\fixtures\large.xci --secure-payload-size 5368709120
+python .\tools\package_fixtures.py simulate-stream .\_local\fixtures\large.xci --chunk-size 262144
+```
+
+Esto permite probar casos grandes, tamaño MTP desconocido y padding final antes de
+pasar a hardware.
+
 ## Seguridad del proyecto
 
 Este proyecto prioriza rutas seguras:
