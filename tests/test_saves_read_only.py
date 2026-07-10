@@ -71,6 +71,23 @@ class SavesReadOnlyArchitectureTests(unittest.TestCase):
         self.assertNotIn("fsdevMountSaveData", source)
         self.assertNotIn("fsFileWrite", source)
 
+    def test_save_backup_planner_is_portable_application_use_case(self) -> None:
+        header = (
+            SWITCH_APP / "include" / "transfer_switch" / "application"
+            / "plan_save_backups.h"
+        ).read_text(encoding="utf-8")
+        source = (
+            SWITCH_APP / "source" / "application" / "plan_save_backups.c"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("TsSaveBackupCandidate", header)
+        self.assertIn("TsSaveBackupPlanningSummary", header)
+        self.assertIn("ts_plan_save_backups", source)
+        self.assertIn("ts_save_backup_plan_create", source)
+        self.assertNotIn("<switch.h>", source)
+        self.assertNotIn("fsdevMountSaveData", source)
+        self.assertNotIn("fsFileWrite", source)
+
 
 if __name__ == "__main__":
     unittest.main()

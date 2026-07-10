@@ -38,6 +38,22 @@ Este módulo no depende de libnx ni de MTP. Solo genera:
 - ruta `manifest.json`;
 - contenido JSON básico del manifiesto.
 
+Caso de uso portable:
+
+- `switch_app/include/transfer_switch/application/plan_save_backups.h`
+- `switch_app/source/application/plan_save_backups.c`
+
+Este caso de uso recibe una lista de saves candidatos y genera planes de backup,
+incluyendo un resumen:
+
+- cantidad solicitada;
+- cantidad planificada;
+- cantidad fallida;
+- primer error encontrado.
+
+Todavía no copia archivos. Es una fase intermedia para que la UI pueda mostrar qué
+se va a respaldar antes de ejecutar el backup real.
+
 ## Manifest v1
 
 Ejemplo:
@@ -63,8 +79,8 @@ Ejemplo:
 
 ## Próximos pasos
 
-1. Crear un caso de uso `create_save_backup`.
-2. Agregar un puerto abstracto para copiar árboles de archivos.
-3. Implementar adaptador Switch que copie desde el mount read-only hacia la SD.
-4. Agregar resumen de resultado por save.
+1. Agregar un puerto abstracto para copiar árboles de archivos.
+2. Implementar adaptador Switch que copie desde el mount read-only hacia la SD.
+3. Agregar resumen de resultado por save.
+4. Mostrar confirmación previa en UI.
 5. Solo después evaluar restore con confirmación explícita.

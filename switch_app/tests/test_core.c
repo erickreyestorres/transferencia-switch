@@ -4,6 +4,7 @@
 
 #include "transfer_switch/adapters/dbi_catalog.h"
 #include "transfer_switch/application/list_remote_files.h"
+#include "transfer_switch/application/plan_save_backups.h"
 #include "transfer_switch/application/probe_remote_file.h"
 #include "transfer_switch/domain/save_backup_plan.h"
 #include "transfer_switch/domain/safe_path.h"
@@ -251,6 +252,56 @@ static void test_save_backup_plan(void) {
     CHECK(ts_save_backup_manifest_json(&plan, manifest, 16) == TS_BUFFER_TOO_SMALL);
 }
 
+static void test_plan_save_backups(void) {
+    TsSaveBackupCandidate candidates[2] = {
+        {0x0100000000000001ull, 0x1111222233334444ull, 0xAAAABBBBCCCCDDDDull},
+        {0x0100000000000002ull, 0x5555666677778888ull, 0xEEEEFFFF00001111ull},
+    };
+    TsSaveBackupPlan plans[2];
+    TsSaveBackupPlanningSummary summary;
+
+    CHECK(ts_plan_save_backups(
+        candidates,
+        2,
+        "2026-07-10",
+        plans,
+        2,
+        &summary
+    ) == TS_OK);
+    CHECK(summary.requested_count == 2);
+    CHECK(summary.planned_count == 2);
+    CHECK(summary.failed_count == 0);
+    CHECK(summary.first_error == TS_OK);
+    CHECK(strcmp(plans[0].folder_name, "0100000000000001_user_33334444") == 0);
+    CHECK(strcmp(plans[1].folder_name, "0100000000000002_user_77778888") == 0);
+
+    CHECK(ts_plan_save_backups(
+        candidates,
+        2,
+        "2026-07-10",
+        plans,
+        1,
+        &summary
+    ) == TS_BUFFER_TOO_SMALL);
+    CHECK(summary.requested_count == 2);
+    CHECK(summary.planned_count == 1);
+    CHECK(summary.failed_count == 1);
+    CHECK(summary.first_error == TS_BUFFER_TOO_SMALL);
+
+    candidates[0].application_id = 0;
+    CHECK(ts_plan_save_backups(
+        candidates,
+        2,
+        "2026-07-10",
+        plans,
+        2,
+        &summary
+    ) == TS_INVALID_ARGUMENT);
+    CHECK(summary.planned_count == 1);
+    CHECK(summary.failed_count == 1);
+    CHECK(summary.first_error == TS_INVALID_ARGUMENT);
+}
+
 int main(void) {
     test_catalog_domain();
     test_list_use_case();
@@ -258,6 +309,7 @@ int main(void) {
     test_dbi_adapter_rejects_bad_magic();
     test_safe_destination_paths();
     test_save_backup_plan();
+    test_plan_save_backups();
 
     if (tests_failed != 0) {
         fprintf(stderr, "%d de %d comprobaciones fallaron.\n", tests_failed, tests_run);
