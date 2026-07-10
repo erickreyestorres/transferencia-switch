@@ -83,7 +83,7 @@ El resultado se genera en:
 
 ```powershell
 python -m unittest discover -s tests -q
-powershell -ExecutionPolicy Bypass -File .\test_switch_core.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\test_switch_core.ps1
 ```
 
 ## Seguridad del proyecto

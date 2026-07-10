@@ -8,9 +8,10 @@ transferencia-switch/
 ├─ pc_backend/      Legacy USB backend/prototype, kept for tests.
 ├─ tests/           Python automated tests.
 ├─ docs/            Technical and product documentation.
-├─ tools/           Maintenance scripts and helper assets.
+├─ scripts/         Convenience scripts for build, tests, and legacy tools.
+├─ tools/           Maintenance helper assets.
 ├─ README*.md       Main documentation in Spanish and English.
-└─ build_*.ps1/cmd  Convenience build scripts.
+└─ .gitignore       Rules to avoid committing binaries and temporary files.
 ```
 
 ## `switch_app/`
@@ -50,4 +51,3 @@ python -m unittest discover -s tests -q
 ## `tools/`
 
 Auxiliary project maintenance tools. These are not part of the final Switch app.
-
