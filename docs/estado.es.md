@@ -41,6 +41,9 @@
   manifest v1 sin depender de libnx ni modificar saves.
 - Caso de uso portable `plan_save_backups`: prepara múltiples planes y resumen de
   fallos/capacidad antes de copiar archivos reales.
+- Instalador SD distingue contenido nuevo de contenido ya existente: si las NCAs ya
+  estaban instaladas y coinciden en tamaño, el resultado indica “ya instalado” y
+  registra `existing_nca` en el log.
 - Rollback de metadatos y contenidos nuevos ante error o cancelación.
 - Primera instalación NSP confirmada en hardware; Windows perdió la confirmación final.
 - La respuesta MTP final ahora se envía antes de cerrar los servicios NCM/NS/ES.

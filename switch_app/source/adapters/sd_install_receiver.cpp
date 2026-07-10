@@ -328,16 +328,35 @@ public:
             }
         }
         finished_ = true;
-        detail_ = package_type_ == PackageType::xci
-            ? "XCI instalado correctamente en SD"
-            : "NSP instalado correctamente en SD";
+        if (newly_registered_.empty() && existing_nca_count_ > 0) {
+            detail_ = package_type_ == PackageType::xci
+                ? "XCI ya instalado; contenido existente reutilizado"
+                : "NSP ya instalado; contenido existente reutilizado";
+        } else if (existing_nca_count_ > 0) {
+            char buffer[160];
+            std::snprintf(
+                buffer,
+                sizeof(buffer),
+                "%s instalado en SD; %u NCA nuevas, %u ya existentes",
+                package_type_ == PackageType::xci ? "XCI" : "NSP",
+                static_cast<unsigned int>(newly_registered_.size()),
+                static_cast<unsigned int>(existing_nca_count_)
+            );
+            detail_ = buffer;
+        } else {
+            detail_ = package_type_ == PackageType::xci
+                ? "XCI instalado correctamente en SD"
+                : "NSP instalado correctamente en SD";
+        }
         appendInstallLog(
-            "OK file=\"%s\" type=%s received=%llu cnmt=%u nca=%u",
+            "OK file=\"%s\" type=%s received=%llu cnmt=%u nca=%u existing_nca=%u detail=\"%s\"",
             name_.c_str(),
             package_type_ == PackageType::xci ? "XCI" : "NSP",
             static_cast<unsigned long long>(received_),
             static_cast<unsigned int>(cnmt_ids_.size()),
-            static_cast<unsigned int>(newly_registered_.size())
+            static_cast<unsigned int>(newly_registered_.size()),
+            static_cast<unsigned int>(existing_nca_count_),
+            detail_.c_str()
         );
         return true;
     }
@@ -798,7 +817,14 @@ private:
             if (R_FAILED(result) || installed_size != static_cast<int64_t>(entry.size)) {
                 return fail("NCA existente con tamano diferente");
             }
+            ++existing_nca_count_;
             skip_active_nca_ = true;
+            appendInstallLog(
+                "ENTRY existing file=\"%s\" name=\"%s\" size=%llu detail=\"contenido ya instalado\"",
+                name_.c_str(),
+                entry.name.c_str(),
+                static_cast<unsigned long long>(entry.size)
+            );
             return true;
         }
 
@@ -1213,6 +1239,7 @@ private:
     std::map<std::string, std::vector<uint8_t>> certificates_;
     std::vector<NcmContentId> cnmt_ids_;
     std::vector<NcmContentId> newly_registered_;
+    size_t existing_nca_count_ = 0;
     NcmContentId active_content_id_ {};
     std::vector<NcmContentMetaKey> metadata_keys_;
     std::string detail_;
