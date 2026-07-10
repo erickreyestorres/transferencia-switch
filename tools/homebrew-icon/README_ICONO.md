@@ -25,7 +25,7 @@ Este paquete agrega el icono del `.nro` para Homebrew Menu.
 2. Ejecuta:
 
    ```powershell
-   powershell -ExecutionPolicy Bypass -File .\aplicar_icono.ps1
+   powershell -ExecutionPolicy Bypass -File .\tools\homebrew-icon\aplicar_icono.ps1
    ```
 
 3. Compila:

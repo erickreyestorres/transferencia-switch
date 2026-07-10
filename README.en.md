@@ -63,6 +63,9 @@ copy of private code.
 - `tests/`: Python tests for architecture, MTP behavior, and safety rules.
 - `docs/`: technical and product documentation.
 
+For a folder-by-folder explanation, see
+[`docs/project-structure.en.md`](docs/project-structure.en.md).
+
 ## Build
 
 Requires Docker Desktop and the `devkitpro/devkita64` image:
