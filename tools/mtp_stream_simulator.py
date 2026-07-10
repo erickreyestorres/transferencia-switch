@@ -41,6 +41,37 @@ class StreamSimulationResult:
     detail: str
 
 
+def format_report(result: StreamSimulationResult) -> str:
+    status = "OK" if result.succeeded else "FALLO"
+    advertised = (
+        "desconocido/0xFFFFFFFF"
+        if result.advertised_size == UNKNOWN_MTP_SIZE
+        else str(result.advertised_size)
+    )
+    lines = [
+        "Reporte simulacion MTP",
+        "=======================",
+        f"Estado: {status}",
+        f"Archivo: {result.path}",
+        f"Tipo: {result.kind}",
+        f"Detalle: {result.detail}",
+        f"Tamano host: {result.host_size}",
+        f"Tamano anunciado: {advertised}",
+        f"Tamano inferido: {result.inferred_size}",
+        f"Transferido: {result.transferred}",
+        f"Chunks: {result.chunks} x {result.chunk_size}",
+        f"Bytes extra al final: {result.trailing_bytes}",
+        f"Cancelado: {result.cancelled}",
+    ]
+    if result.trailing_bytes:
+        lines.append("Accion sugerida: validar este caso en hardware antes de confiar en XCI grandes con padding.")
+    elif not result.succeeded:
+        lines.append("Accion sugerida: revisar tamano anunciado, cancelacion o estructura del paquete.")
+    else:
+        lines.append("Accion sugerida: apto para pasar a prueba de hardware si el NRO tambien compila.")
+    return "\n".join(lines)
+
+
 def simulate_mtp_send(
     path: Path,
     *,
@@ -111,6 +142,7 @@ def main() -> int:
     parser.add_argument("--advertised-size", type=int)
     parser.add_argument("--chunk-size", type=int, default=16 * 1024)
     parser.add_argument("--cancel-after", type=int)
+    parser.add_argument("--report", action="store_true")
     args = parser.parse_args()
 
     advertised = args.advertised_size
@@ -123,8 +155,11 @@ def main() -> int:
         chunk_size=args.chunk_size,
         cancel_after=args.cancel_after,
     )
-    for key, value in result.__dict__.items():
-        print(f"{key}={value}")
+    if args.report:
+        print(format_report(result))
+    else:
+        for key, value in result.__dict__.items():
+            print(f"{key}={value}")
     return 0 if result.succeeded else 2
 
 

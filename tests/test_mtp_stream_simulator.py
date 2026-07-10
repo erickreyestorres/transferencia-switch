@@ -2,7 +2,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tools.mtp_stream_simulator import UNKNOWN_MTP_SIZE, simulate_mtp_send
+from tools.mtp_stream_simulator import UNKNOWN_MTP_SIZE, format_report, simulate_mtp_send
 from tools.package_fixtures import create_nsp, create_xci
 
 
@@ -68,6 +68,19 @@ class MtpStreamSimulatorTests(unittest.TestCase):
 
             self.assertFalse(result.succeeded)
             self.assertIn("no coincide", result.detail)
+
+    def test_formats_human_readable_report(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "padded.xci"
+            create_xci(path, secure_payload_size=2 * 1024 * 1024, trailing_padding=4096)
+            result = simulate_mtp_send(path, advertised_size=UNKNOWN_MTP_SIZE)
+
+            report = format_report(result)
+
+            self.assertIn("Reporte simulacion MTP", report)
+            self.assertIn("Estado: FALLO", report)
+            self.assertIn("Bytes extra al final: 4096", report)
+            self.assertIn("Accion sugerida", report)
 
 
 if __name__ == "__main__":
