@@ -63,6 +63,9 @@ documentada, no una copia de código privado.
 - `tests/`: pruebas Python de arquitectura, MTP y reglas de seguridad.
 - `docs/`: documentación técnica y de producto.
 
+Para una explicación carpeta por carpeta, revisa
+[`docs/estructura-proyecto.es.md`](docs/estructura-proyecto.es.md).
+
 ## Compilación
 
 Requiere Docker Desktop y la imagen `devkitpro/devkita64`:
