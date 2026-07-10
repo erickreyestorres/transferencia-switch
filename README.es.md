@@ -47,9 +47,10 @@ documentada, no una copia de código privado.
 
 ## Limitaciones conocidas
 
-- Los XCI grandes sobre 4 GB todavía requieren recepción MTP con tamaño desconocido
-  (`0xFFFFFFFF`). La app ya prepara el storage para aceptarlos desde Windows, pero
-  aún los rechaza con un error explícito hasta implementar recepción streaming segura.
+- Los XCI/NSP grandes que Windows informa con tamaño MTP desconocido (`0xFFFFFFFF`)
+  ahora usan una ruta streaming experimental: la app intenta inferir el tamaño real
+  desde PFS0/HFS0 y detenerse al completar el paquete. Debe validarse con XCI grandes
+  reales antes de considerarlo estable.
 - NSZ/XCZ todavía no están soportados.
 - La instalación hacia NAND no está habilitada por seguridad.
 - La suspensión automática de la consola puede cortar transferencias largas.
@@ -90,6 +91,27 @@ Ese es el archivo que debes copiar a la SD de la consola.
 python -m unittest discover -s tests -q
 powershell -ExecutionPolicy Bypass -File .\scripts\test_switch_core.ps1
 ```
+
+Para una prueba funcional rápida de PC antes de copiar un nuevo NRO a la consola:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\functional_smoke.ps1
+```
+
+Esto ejecuta pruebas Python, pruebas C, compila con Docker y verifica que exista
+`dist/transferencia_switch.nro` con hash SHA256. No reemplaza la prueba real en
+hardware, pero evita instalar builds rotos.
+
+También existen fixtures sintéticos para simular NSP/XCI de distintos tamaños sin
+usar archivos reales:
+
+```powershell
+python .\tools\package_fixtures.py make-xci .\_local\fixtures\large.xci --secure-payload-size 5368709120
+python .\tools\package_fixtures.py simulate-stream .\_local\fixtures\large.xci --chunk-size 262144
+```
+
+Esto permite probar casos grandes, tamaño MTP desconocido y padding final antes de
+pasar a hardware.
 
 ## Seguridad del proyecto
 

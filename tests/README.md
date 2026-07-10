@@ -14,10 +14,18 @@ la consola.
 - `test_mtp_controlled_write.py`: escritura controlada en Inbox.
 - `test_*_read_only.py`: seguridad de Album, BIS/NAND, Installed games, Saves.
 - `test_menu_input.py`: navegación del menú.
+- `test_package_fixtures.py`: genera NSP/XCI sintéticos para probar tamaños normales,
+  mayores de 4 GiB y XCI con padding sin depender de archivos reales.
 
 Comando:
 
 ```powershell
 python -m unittest discover -s tests -q
+```
+
+Para una comprobación funcional completa de PC antes de probar en hardware:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\functional_smoke.ps1
 ```
 

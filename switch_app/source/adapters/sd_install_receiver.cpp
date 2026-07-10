@@ -25,6 +25,7 @@ constexpr size_t kNcaHeaderSize = 0x4000;
 constexpr size_t kMaxFiles = 4096;
 constexpr size_t kMaxHeaderSize = 8 * 1024 * 1024;
 constexpr size_t kMaxSidecarSize = 2 * 1024 * 1024;
+constexpr uint64_t kUnknownMtpObjectSize = 0xFFFFFFFFull;
 constexpr long kMaxInstallLogSize = 512 * 1024;
 constexpr const char* kLogDir = "sdmc:/switch/transferencia-switch/logs";
 constexpr const char* kInstallLogPath = "sdmc:/switch/transferencia-switch/logs/install.log";
@@ -205,10 +206,7 @@ public:
         // 1 MiB es un límite conservador que rechaza archivos de texto/prueba
         // antes de llegar al parser.
         constexpr uint64_t kMinPackageSize = 1024ull * 1024ull;
-        if (expected_size_ == 0xFFFFFFFFull) {
-            return fail("archivo grande con tamano MTP desconocido aun no soportado");
-        }
-        if (expected_size_ < kMinPackageSize) {
+        if (expected_size_ != kUnknownMtpObjectSize && expected_size_ < kMinPackageSize) {
             return fail("tamano de paquete no compatible en esta version");
         }
         Result result = ncmInitialize();
@@ -263,7 +261,8 @@ public:
     }
 
     bool write(const void* data, size_t size) override {
-        if (failed_ || finished_ || data == nullptr || received_ + size > expected_size_) {
+        if (failed_ || finished_ || data == nullptr ||
+            (hasKnownFinalSize() && received_ + size > expected_size_)) {
             return fail("flujo de paquete fuera de limites");
         }
         const auto* bytes = static_cast<const uint8_t*>(data);
@@ -287,6 +286,19 @@ public:
             received_ += consumed;
         }
         return !failed_;
+    }
+
+    bool hasKnownFinalSize() const override {
+        return expected_size_ != kUnknownMtpObjectSize;
+    }
+
+    uint64_t finalSize() const override {
+        return hasKnownFinalSize() ? expected_size_ : 0;
+    }
+
+    bool isComplete() const override {
+        return hasKnownFinalSize() && received_ == expected_size_ &&
+            header_parsed_ && current_entry_ == entries_.size();
     }
 
     bool finish() override {
@@ -395,7 +407,8 @@ private:
             const uint64_t target = sizeof(Pfs0Header) +
                 static_cast<uint64_t>(base->file_count) * sizeof(Pfs0Entry) +
                 base->string_table_size;
-            if (target > kMaxHeaderSize || target > expected_size_) {
+            if (target > kMaxHeaderSize ||
+                (hasKnownFinalSize() && target > expected_size_)) {
                 fail("cabecera PFS0 demasiado grande");
                 return amount;
             }
@@ -469,7 +482,8 @@ private:
                 if (!setHfsHeaderTarget(*base, xci_secure_target_, "HFS0 secure invalido")) {
                     return consumed;
                 }
-                if (xci_secure_offset_ + xci_secure_target_ > expected_size_) {
+                if (hasKnownFinalSize() &&
+                    xci_secure_offset_ + xci_secure_target_ > expected_size_) {
                     fail("cabecera secure fuera del XCI");
                     return consumed;
                 }
@@ -510,9 +524,18 @@ private:
             xci_root_header_.data() + sizeof(Pfs0Header) +
             base->file_count * sizeof(Hfs0Entry));
         const uint64_t data_start = kXciRootOffset + xci_root_target_;
+        bool found_secure = false;
+        uint64_t secure_offset = 0;
+        uint64_t secure_size = 0;
+        uint64_t computed_end = data_start;
         for (uint32_t index = 0; index < base->file_count; ++index) {
             const Hfs0Entry& raw = raw_entries[index];
             if (raw.string_offset >= base->string_table_size) return fail("tabla HFS0 raiz invalida");
+            if (raw.data_offset + raw.file_size < raw.data_offset ||
+                data_start + raw.data_offset + raw.file_size < data_start) {
+                return fail("particion HFS0 fuera de rango");
+            }
+            computed_end = std::max(computed_end, data_start + raw.data_offset + raw.file_size);
             const size_t available = base->string_table_size - raw.string_offset;
             const char* name = strings + raw.string_offset;
             if (std::memchr(name, 0, available) == nullptr) return fail("nombre HFS0 invalido");
@@ -527,25 +550,38 @@ private:
                 static_cast<unsigned long long>(expected_size_)
             );
             if (std::strcmp(name, "secure") == 0) {
-                if (raw.data_offset + raw.file_size < raw.data_offset ||
+                if (hasKnownFinalSize() &&
                     data_start + raw.data_offset + raw.file_size > expected_size_) {
                     return fail("particion secure fuera del XCI");
                 }
-                xci_secure_offset_ = data_start + raw.data_offset;
-                xci_secure_size_ = raw.file_size;
-                if (xci_secure_offset_ < xci_cursor_) return fail("offset secure invalido");
-                appendInstallLog(
-                    "XCI secure file=\"%s\" offset=%llu size=%llu header=%u entries=%u",
-                    name_.c_str(),
-                    static_cast<unsigned long long>(xci_secure_offset_),
-                    static_cast<unsigned long long>(xci_secure_size_),
-                    static_cast<unsigned int>(xci_secure_target_),
-                    static_cast<unsigned int>(base->file_count)
-                );
-                return true;
+                found_secure = true;
+                secure_offset = data_start + raw.data_offset;
+                secure_size = raw.file_size;
             }
         }
-        return fail("particion secure no encontrada");
+        if (!found_secure) {
+            return fail("particion secure no encontrada");
+        }
+        if (!hasKnownFinalSize()) {
+            expected_size_ = computed_end;
+            appendInstallLog(
+                "XCI inferred size file=\"%s\" expected=%llu",
+                name_.c_str(),
+                static_cast<unsigned long long>(expected_size_)
+            );
+        }
+        xci_secure_offset_ = secure_offset;
+        xci_secure_size_ = secure_size;
+        if (xci_secure_offset_ < xci_cursor_) return fail("offset secure invalido");
+        appendInstallLog(
+            "XCI secure file=\"%s\" offset=%llu size=%llu header=%u entries=%u",
+            name_.c_str(),
+            static_cast<unsigned long long>(xci_secure_offset_),
+            static_cast<unsigned long long>(xci_secure_size_),
+            static_cast<unsigned int>(xci_secure_target_),
+            static_cast<unsigned int>(base->file_count)
+        );
+        return true;
     }
 
     bool parseXciSecureHeader() {
@@ -668,6 +704,14 @@ private:
             }
             entries_.push_back(std::move(entry));
             previous_end = raw.data_offset + raw.file_size;
+        }
+        if (!hasKnownFinalSize()) {
+            expected_size_ = header_target_ + previous_end;
+            appendInstallLog(
+                "NSP inferred size file=\"%s\" expected=%llu",
+                name_.c_str(),
+                static_cast<unsigned long long>(expected_size_)
+            );
         }
         if (header_target_ + previous_end != expected_size_) {
             return fail("tamano NSP no coincide con PFS0");

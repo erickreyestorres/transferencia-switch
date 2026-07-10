@@ -871,11 +871,12 @@ static int64_t receive_sink(
         uint64_t progressTotal = 0,
         bool* sinkRejected = nullptr)
 {
-    if (sink == nullptr || length < 0 || length == 0xFFFFFFFF) {
+    if (sink == nullptr || length < 0) {
         errno = EINVAL;
         return -1;
     }
 
+    const bool unknownLength = length == 0xFFFFFFFF;
     int64_t total = 0;
     bool rejected = sinkRejected != nullptr && *sinkRejected;
     unsigned char* buffer = static_cast<unsigned char*>(memalign(0x1000, 16384));
@@ -883,8 +884,23 @@ static int64_t receive_sink(
         errno = ENOMEM;
         return -1;
     }
-    while (total < length) {
-        const size_t remaining = static_cast<size_t>(length - total);
+    while (unknownLength || total < length) {
+        if (unknownLength && sink->isComplete()) {
+            break;
+        }
+        uint64_t effectiveTotal = progressTotal;
+        if (unknownLength && sink->hasKnownFinalSize()) {
+            effectiveTotal = sink->finalSize();
+            if (progressBase + static_cast<uint64_t>(total) >= effectiveTotal) {
+                break;
+            }
+        }
+        const uint64_t remaining64 = unknownLength && sink->hasKnownFinalSize()
+            ? effectiveTotal - progressBase - static_cast<uint64_t>(total)
+            : static_cast<uint64_t>(length - total);
+        const size_t remaining = remaining64 < 16384
+            ? static_cast<size_t>(remaining64)
+            : 16384;
         const size_t requestSize = remaining < 16384 ? remaining : 16384;
         const ssize_t size = usb->read(reinterpret_cast<char*>(buffer), requestSize);
         if (size <= 0) {
@@ -899,7 +915,9 @@ static int64_t receive_sink(
         }
         total += size;
         if (observer != nullptr)
-            observer->transferProgress(progressBase + total, progressTotal);
+            observer->transferProgress(
+                progressBase + total,
+                unknownLength && sink->hasKnownFinalSize() ? sink->finalSize() : progressTotal);
     }
     free(buffer);
     if (sinkRejected != nullptr) *sinkRejected = rejected;
@@ -1175,7 +1193,8 @@ MtpResponseCode MtpServer::doSendObject() {
     const int initialData = result == MTP_RESPONSE_OK
         ? ret - MTP_CONTAINER_HEADER_SIZE
         : 0;
-    if (result == MTP_RESPONSE_OK &&
+    const bool unknownObjectSize = mSendObjectFileSize == 0xFFFFFFFF;
+    if (result == MTP_RESPONSE_OK && !unknownObjectSize &&
         static_cast<uint64_t>(initialData) > mSendObjectFileSize) {
         result = MTP_RESPONSE_INVALID_DATASET;
         detail = "tamano recibido invalido";
@@ -1212,17 +1231,22 @@ MtpResponseCode MtpServer::doSendObject() {
             transferred = written;
         }
         if (mTransferObserver != nullptr)
-            mTransferObserver->transferProgress(transferred, mSendObjectFileSize);
+            mTransferObserver->transferProgress(
+                transferred,
+                mSendObjectSink && mSendObjectSink->hasKnownFinalSize()
+                    ? mSendObjectSink->finalSize()
+                    : mSendObjectFileSize);
     }
 
-    if (result == MTP_RESPONSE_OK && transferred < mSendObjectFileSize) {
+    if (result == MTP_RESPONSE_OK &&
+        (unknownObjectSize || transferred < mSendObjectFileSize)) {
         VLOG(2) << "receiving " << mSendObjectFilePath.c_str();
         int64_t received = 0;
         if (mSendObjectSink) {
             received = receive_sink(
                 mUSB,
                 mSendObjectSink.get(),
-                mSendObjectFileSize - transferred,
+                unknownObjectSize ? 0xFFFFFFFF : mSendObjectFileSize - transferred,
                 mTransferObserver,
                 transferred,
                 mSendObjectFileSize,
@@ -1252,7 +1276,10 @@ MtpResponseCode MtpServer::doSendObject() {
     }
 
     if (mSendObjectSink && result == MTP_RESPONSE_OK) {
-        if (transferred != mSendObjectFileSize) {
+        const uint64_t finalSize = mSendObjectSink->hasKnownFinalSize()
+            ? mSendObjectSink->finalSize()
+            : mSendObjectFileSize;
+        if (!mSendObjectSink->hasKnownFinalSize() || transferred != finalSize) {
             result = MTP_RESPONSE_GENERAL_ERROR;
             detail = "tamano final no coincide";
         } else if (!mSendObjectSink->finish()) {
@@ -1302,7 +1329,13 @@ MtpResponseCode MtpServer::doSendObject() {
                 ? transfer_switch::TransferOutcome::cancelled
                 : transfer_switch::TransferOutcome::failed);
         mTransferObserver->transferFinished(
-                mSendObjectFilePath.c_str(), transferred, mSendObjectFileSize, outcome, detail);
+                mSendObjectFilePath.c_str(),
+                transferred,
+                mSendObjectSink && mSendObjectSink->hasKnownFinalSize()
+                    ? mSendObjectSink->finalSize()
+                    : mSendObjectFileSize,
+                outcome,
+                detail);
     }
     mSendObjectHandle = kInvalidObjectHandle;
     mSendObjectSinkCompleted = mSendObjectSink != nullptr;

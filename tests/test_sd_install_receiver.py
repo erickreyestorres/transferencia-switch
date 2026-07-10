@@ -75,9 +75,14 @@ class SdInstallReceiverTests(unittest.TestCase):
         self.assertIn("solo NSP o XCI sin compresion", self.receiver)
         self.assertIn("for (const NcmContentId& cnmt_id : cnmt_ids_)", self.receiver)
 
-    def test_large_unknown_mtp_size_is_reported_explicitly(self) -> None:
-        self.assertIn("expected_size_ == 0xFFFFFFFFull", self.receiver)
-        self.assertIn("tamano MTP desconocido aun no soportado", self.receiver)
+    def test_large_unknown_mtp_size_is_streamed_until_package_size_is_known(self) -> None:
+        self.assertIn("kUnknownMtpObjectSize = 0xFFFFFFFFull", self.receiver)
+        self.assertIn("hasKnownFinalSize()", self.receiver)
+        self.assertIn("NSP inferred size", self.receiver)
+        self.assertIn("XCI inferred size", self.receiver)
+        self.assertIn("unknownLength", self.server)
+        self.assertIn("sink->isComplete()", self.server)
+        self.assertNotIn("tamano MTP desconocido aun no soportado", self.receiver)
         self.assertNotIn("expected_size_ < kMinPackageSize || expected_size_ >=", self.receiver)
 
     def test_collections_support_multiple_cnmt_records(self) -> None:

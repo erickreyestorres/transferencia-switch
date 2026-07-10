@@ -100,7 +100,9 @@ respaldo y espacio libre suficiente en la SD.
 9. Repetir con un XCI propio menor de 4 GiB. Debe validar HFS0, instalar desde la
    partición `secure` y mostrar `XCI instalado correctamente en SD`.
 
-No probar todavía NSZ, XCZ, paquetes con varios CNMT ni archivos de 4 GiB o más.
+No probar todavía NSZ ni XCZ. Los archivos de 4 GiB o más deben probarse como
+validación experimental: revisar `sdmc:/switch/transferencia-switch/logs/install.log`
+después de cada intento y conservar una SD de pruebas separada.
 `6: NAND install` sigue intencionalmente ausente en esta versión.
 
 Las primeras pruebas instalaron correctamente el NSP y la consola indicó `1 correcto`,
