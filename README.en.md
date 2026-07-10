@@ -46,8 +46,10 @@ copy of private code.
 
 ## Known limitations
 
-- Large XCI files, especially above 4 GB, still require a full review of the
-  64-bit size and offset path.
+- Large XCI files above 4 GB still require MTP reception with unknown size
+  (`0xFFFFFFFF`). The app now prepares the install storage so Windows can start
+  those transfers, but it still rejects them with an explicit error until safe
+  streaming reception is implemented.
 - NSZ/XCZ are not supported yet.
 - NAND installation is intentionally disabled for safety.
 - Console auto-sleep can interrupt long transfers.

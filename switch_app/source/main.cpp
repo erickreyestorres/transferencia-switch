@@ -170,7 +170,7 @@ bool run_mtp(bool receive_mode, bool combined_mode = false) {
         "5: SD Card install",
         kInboxReserveBytes,
         true,
-        0xFFFFFFFEull,
+        0,
         true
     );
     android::MtpStorage nand_user_storage(

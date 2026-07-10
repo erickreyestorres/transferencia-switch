@@ -47,8 +47,9 @@ documentada, no una copia de código privado.
 
 ## Limitaciones conocidas
 
-- Los XCI grandes, especialmente sobre 4 GB, requieren una revisión completa de la
-  ruta de tamaños y offsets de 64 bits.
+- Los XCI grandes sobre 4 GB todavía requieren recepción MTP con tamaño desconocido
+  (`0xFFFFFFFF`). La app ya prepara el storage para aceptarlos desde Windows, pero
+  aún los rechaza con un error explícito hasta implementar recepción streaming segura.
 - NSZ/XCZ todavía no están soportados.
 - La instalación hacia NAND no está habilitada por seguridad.
 - La suspensión automática de la consola puede cortar transferencias largas.

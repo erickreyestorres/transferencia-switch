@@ -205,7 +205,10 @@ public:
         // 1 MiB es un límite conservador que rechaza archivos de texto/prueba
         // antes de llegar al parser.
         constexpr uint64_t kMinPackageSize = 1024ull * 1024ull;
-        if (expected_size_ < kMinPackageSize || expected_size_ >= 0xFFFFFFFFull) {
+        if (expected_size_ == 0xFFFFFFFFull) {
+            return fail("archivo grande con tamano MTP desconocido aun no soportado");
+        }
+        if (expected_size_ < kMinPackageSize) {
             return fail("tamano de paquete no compatible en esta version");
         }
         Result result = ncmInitialize();
