@@ -5,6 +5,7 @@ SOURCES := \
 	../source/domain/status.c \
 	../source/domain/safe_path.c \
 	../source/domain/save_backup_plan.c \
+	../source/domain/transfer_result_category.c \
 	../source/domain/catalog.c \
 	../source/application/plan_save_backups.c \
 	../source/application/list_remote_files.c \

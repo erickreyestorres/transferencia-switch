@@ -84,7 +84,11 @@ void GraphicalTransferPresenter::transferFinished(
     const std::string name = (sep == std::string::npos)
         ? full : full.substr(sep + 1);
 
-    results_.push_back({name, detail ? detail : "", outcome});
+    const TsTransferResultCategory category = ts_transfer_result_category_from_detail(
+        detail,
+        outcome == TransferOutcome::succeeded,
+        outcome == TransferOutcome::cancelled);
+    results_.push_back({name, detail ? detail : "", category, outcome});
 }
 
 // â”€â”€â”€ Resumen de sesiÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -100,8 +104,11 @@ void GraphicalTransferPresenter::writeSummary(char* dst, size_t capacity) const 
     }
     if (first_failure) {
         std::snprintf(dst, capacity,
-            "Sesion: %u OK, %u fallidos. Fallo: %.80s",
-            succeeded_, failed_, first_failure->name.c_str());
+            "Sesion: %u OK, %u fallidos. %s: %.70s",
+            succeeded_,
+            failed_,
+            ts_transfer_result_category_title(first_failure->category),
+            first_failure->name.c_str());
     } else {
         std::snprintf(dst, capacity,
             "Sesion: %u correctos, %u fallidos, %u cancelados.",
@@ -298,10 +305,20 @@ void GraphicalTransferPresenter::drawResultsList() {
         if (name.size() > 64) name = name.substr(0, 61) + "...";
         rdr_.drawText(text_x, row_y + 6, name.c_str(), Color::white(), 2);
 
-        if (!r.detail.empty()) {
+        const char* category_title = ts_transfer_result_category_title(r.category);
+        rdr_.drawText(text_x, row_y + 38, category_title, label_color, 2);
+
+        if (r.outcome == TransferOutcome::failed) {
+            const char* advice = ts_transfer_result_category_advice(r.category);
+            if (advice != nullptr && advice[0] != '\0') {
+                std::string advice_line = advice;
+                if (advice_line.size() > 72) advice_line = advice_line.substr(0, 69) + "...";
+                rdr_.drawText(text_x, row_y + 60, advice_line.c_str(), Color::grey(), 1);
+            }
+        } else if (!r.detail.empty() && r.category != TS_TRANSFER_CATEGORY_ALREADY_INSTALLED) {
             std::string detail = r.detail;
             if (detail.size() > 64) detail = detail.substr(0, 61) + "...";
-            rdr_.drawText(text_x, row_y + 40, detail.c_str(), label_color, 2);
+            rdr_.drawText(text_x, row_y + 60, detail.c_str(), label_color, 1);
         }
     }
 }
