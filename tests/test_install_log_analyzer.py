@@ -2,7 +2,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tools.install_log_analyzer import analyze_install_log, format_summary
+from tools.install_log_analyzer import TransferRecord, analyze_install_log, classify_record, format_summary
 
 
 SAMPLE_LOG = """\
@@ -38,6 +38,64 @@ class InstallLogAnalyzerTests(unittest.TestCase):
             self.assertIn("particion secure fuera del XCI", summary)
             self.assertIn("contenido existente reutilizado", summary)
             self.assertIn("log antiguo sin existing_nca", summary)
+            self.assertIn("categoría=XCI inválido o incompleto", summary)
+            self.assertIn("Categorías detectadas", summary)
+
+    def test_classifies_known_failure_details(self) -> None:
+        cases = [
+            (
+                TransferRecord(
+                    file="broken.xci",
+                    package_type="XCI",
+                    status="FALLIDO",
+                    detail="particion secure fuera del XCI",
+                ),
+                "xci_secure_out_of_range",
+            ),
+            (
+                TransferRecord(
+                    file="metadata.nsp",
+                    package_type="NSP",
+                    status="FALLIDO",
+                    detail="abrir CNMT /Application_0100.cn (0x0000D401)",
+                ),
+                "cnmt_open_failed",
+            ),
+            (
+                TransferRecord(
+                    file="small.xci",
+                    package_type="XCI",
+                    status="FALLIDO",
+                    detail="XCI NCA chica",
+                ),
+                "small_xci_nca",
+            ),
+            (
+                TransferRecord(
+                    file="sleep.nsp",
+                    package_type="NSP",
+                    status="INICIADO",
+                    detail="",
+                ),
+                "connection_or_sleep",
+            ),
+            (
+                TransferRecord(
+                    file="installed.nsp",
+                    package_type="NSP",
+                    status="OK",
+                    cnmt=1,
+                    new_nca=0,
+                    existing_nca=2,
+                    detail="contenido existente reutilizado",
+                ),
+                "already_installed",
+            ),
+        ]
+
+        for record, expected_code in cases:
+            with self.subTest(record=record):
+                self.assertEqual(classify_record(record).code, expected_code)
 
 
 if __name__ == "__main__":

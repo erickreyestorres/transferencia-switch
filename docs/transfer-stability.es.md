@@ -28,6 +28,18 @@ pero XCI grandes, padding y cancelaciones largas siguen siendo zonas de riesgo.
 - `tools/mtp_stream_simulator.py`: simula envío MTP por chunks.
 - `tools/install_log_analyzer.py`: resume logs reales de hardware.
 
+El analizador de logs también clasifica fallos conocidos en categorías legibles:
+
+| Categoría | Uso |
+|---|---|
+| Contenido ya instalado | El contenido existe y fue reutilizado; no debe contarse como fallo real. |
+| XCI inválido o incompleto | La partición `secure` queda fuera del archivo o el XCI parece truncado. |
+| No se pudo abrir CNMT | El metadato de contenido no abre; puede indicar archivo corrupto o caso no soportado. |
+| NCA de XCI demasiado pequeña | Una NCA del XCI no cumple el tamaño esperado. |
+| Transferencia cancelada | Cancelación por usuario, desconexión o cierre. |
+| Conexión perdida o suspensión | Registro iniciado sin cierre o detalle compatible con suspensión/desconexión. |
+| Fallo no clasificado | Caso nuevo que debe conservarse en `install.log` para crear una regla específica. |
+
 ## Próximos endurecimientos recomendados
 
 1. Probar XCI grande real con log completo.
