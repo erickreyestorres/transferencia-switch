@@ -8,6 +8,7 @@
 #include "transfer_switch/application/probe_remote_file.h"
 #include "transfer_switch/domain/save_backup_plan.h"
 #include "transfer_switch/domain/safe_path.h"
+#include "transfer_switch/domain/transfer_result_category.h"
 
 static int tests_run = 0;
 static int tests_failed = 0;
@@ -302,6 +303,44 @@ static void test_plan_save_backups(void) {
     CHECK(summary.first_error == TS_INVALID_ARGUMENT);
 }
 
+static void test_transfer_result_categories(void) {
+    CHECK(ts_transfer_result_category_from_detail(
+        "XCI ya instalado; contenido existente reutilizado",
+        1,
+        0
+    ) == TS_TRANSFER_CATEGORY_ALREADY_INSTALLED);
+    CHECK(ts_transfer_result_category_from_detail(
+        "particion secure fuera del XCI",
+        0,
+        0
+    ) == TS_TRANSFER_CATEGORY_XCI_INVALID);
+    CHECK(ts_transfer_result_category_from_detail(
+        "abrir CNMT /Application_0100.cn (0x0000D401)",
+        0,
+        0
+    ) == TS_TRANSFER_CATEGORY_CNMT_OPEN_FAILED);
+    CHECK(ts_transfer_result_category_from_detail(
+        "XCI NCA chica: demo.nca",
+        0,
+        0
+    ) == TS_TRANSFER_CATEGORY_XCI_NCA_TOO_SMALL);
+    CHECK(ts_transfer_result_category_from_detail(
+        "usuario cerro el modo MTP",
+        0,
+        1
+    ) == TS_TRANSFER_CATEGORY_CANCELLED);
+    CHECK(ts_transfer_result_category_from_detail(
+        "dispositivo desconectado o suspendido",
+        0,
+        0
+    ) == TS_TRANSFER_CATEGORY_CONNECTION_OR_SLEEP);
+    CHECK(strcmp(
+        ts_transfer_result_category_title(TS_TRANSFER_CATEGORY_XCI_INVALID),
+        "XCI invalido o incompleto"
+    ) == 0);
+    CHECK(strlen(ts_transfer_result_category_advice(TS_TRANSFER_CATEGORY_UNKNOWN_ERROR)) > 0);
+}
+
 int main(void) {
     test_catalog_domain();
     test_list_use_case();
@@ -310,6 +349,7 @@ int main(void) {
     test_safe_destination_paths();
     test_save_backup_plan();
     test_plan_save_backups();
+    test_transfer_result_categories();
 
     if (tests_failed != 0) {
         fprintf(stderr, "%d de %d comprobaciones fallaron.\n", tests_failed, tests_run);

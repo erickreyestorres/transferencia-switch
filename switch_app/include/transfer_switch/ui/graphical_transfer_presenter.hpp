@@ -27,6 +27,7 @@
 #include <vector>
 
 #include "transfer_switch/ports/transfer_observer.hpp"
+#include "transfer_switch/domain/transfer_result_category.h"
 #include "transfer_switch/ui/fb_renderer.hpp"
 
 namespace transfer_switch {
@@ -65,6 +66,7 @@ private:
     struct ResultLine {
         std::string name;
         std::string detail;
+        TsTransferResultCategory category;
         TransferOutcome outcome;
     };
 
