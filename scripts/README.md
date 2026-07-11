@@ -74,3 +74,14 @@ También permite simular cancelaciones:
 ```powershell
 python .\tools\mtp_stream_simulator.py .\_local\fixtures\demo.nsp --cancel-after 65536
 ```
+
+## Analizador de logs de instalación
+
+Para resumir un `install.log` copiado desde la SD:
+
+```powershell
+python .\tools\install_log_analyzer.py .\_local\logs\install.log
+```
+
+Clasifica archivos nuevos OK, contenido ya instalado/reutilizado, fallos,
+cancelaciones y motivos agrupados.
